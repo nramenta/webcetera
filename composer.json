@@ -1,0 +1,19 @@
+{
+    "name": "webcetera/webcetera",
+    "description": "Collection of helper functions",
+    "keywords": ["helpers", "utilities", "miscellaneous"],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Nofriandi Ramenta",
+            "email": "nramenta@gmail.com"
+        }
+    ],
+    "require": {
+        "php": ">=5.3.0"
+    },
+    "autoload": {
+        "files": ["src/webcetera.php"]
+    }
+}
