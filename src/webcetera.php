@@ -106,7 +106,7 @@ function request_var($key, $default = null, &$found = null)
  */
 function form_parse_rules($rules)
 {
-    return array_filter(preg_split('/(?<!\\\\)\|/', $rules,
+    return array_filter(preg_split('/(?<!\\\\)\|/', $rules, -1,
         PREG_SPLIT_DELIM_CAPTURE | PREG_SPLIT_NO_EMPTY),
         function($rule) {
             return !empty($rule);
