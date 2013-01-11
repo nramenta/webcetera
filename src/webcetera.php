@@ -446,17 +446,11 @@ function array_any($array, $value, $strict = false)
  */
 function array_filter_key($array, $callback = null)
 {
-    $result = array();
     if (!isset($callback)) return array_filter($array);
     if (!is_callable($callback)) return $array;
-    if (is_array($callback)) {
-        list($object, $method) = $callback;
-        $callback = function(&$value, &$key) use ($object, $method) {
-            return $object->{$method}($value, $key);
-        };
-    }
+    $result = array();
     foreach ($array as $key => $value) {
-        if ($callback($value, $key)) {
+        if (call_user_func_array($callback, array($value, $key))) {
             $result[$key] = $value;
         }
     }
