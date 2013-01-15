@@ -192,15 +192,18 @@ function form_validate_input($value, $rules)
 
         } elseif (preg_match('/^date:(.+)$/', $rule, $match)) {
 
-            if (date_create($match[1]) != date_create($value)) return false;
+            if (!strlen($value) ||
+                date_create($match[1]) != date_create($value)) return false;
 
         } elseif (preg_match('/^after:(.+)$/', $rule, $match)) {
 
-            if (date_create($match[1]) >= date_create($value)) return false;
+            if (!strlen($value) ||
+                date_create($match[1]) >= date_create($value)) return false;
 
         } elseif (preg_match('/^before:(.+)$/', $rule, $match)) {
 
-            if (date_create($match[1]) <= date_create($value)) return false;
+            if (!strlen($value) ||
+                date_create($match[1]) <= date_create($value)) return false;
 
         } elseif (preg_match('/^in:(.+)$/', $rule, $match)) {
 
