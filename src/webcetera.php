@@ -63,7 +63,8 @@ function cookie_var($key, $default = null, &$found = null)
  */
 function get_var($key, $default = null, &$found = null)
 {
-    return array_get($_GET, $key, $default, $found);
+    $var = array_get($_GET, $key, $default, $found);
+    return strlen(trim($var)) ? $var : $default;
 }
 
 /*
@@ -77,7 +78,8 @@ function get_var($key, $default = null, &$found = null)
  */
 function post_var($key, $default = null, &$found = null)
 {
-    return array_get($_POST, $key, $default, $found);
+    $var = array_get($_POST, $key, $default, $found);
+    return strlen(trim($var)) ? $var : $default;
 }
 
 /*
@@ -91,7 +93,8 @@ function post_var($key, $default = null, &$found = null)
  */
 function request_var($key, $default = null, &$found = null)
 {
-    return array_get($_REQUEST, $key, $default, $found);
+    $var = array_get($_REQUEST, $key, $default, $found);
+    return strlen(trim($var)) ? $var : $default;
 }
 
 // ## Form validation functions
