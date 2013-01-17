@@ -266,20 +266,15 @@ function form_validate($input, $definition, &$errors = null)
 {
     foreach ($definition as $key => $rules) {
         if (is_array($rules)) {
-            if (isset($input[$key])) {
-                form_validate($input[$key], $rules, $_errors);
-                $errors[$key] = $_errors;
-                unset($_errors);
-            } else {
-                $errors[$key] = true;
-            }
-
+            form_validate(
+                isset($input[$key]) ? $input[$key] : null, $rules, $_errors
+            );
+            $errors[$key] = $_errors;
+            unset($_errors);
         } else {
-            if (isset($input[$key])) {
-                $_errors = form_validate_input($input[$key], $rules);
-            } else {
-                $_errors = false;
-            }
+            $_errors = form_validate_input(
+                isset($input[$key]) ? $input[$key] : null, $rules
+            );
             if (is_array($_errors)) {
                 array_walk($_errors, function(&$item, $key) {
                     $item = !$item;
