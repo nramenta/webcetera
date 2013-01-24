@@ -883,12 +883,11 @@ function bcrypt_verify($string, $hash)
  * Returns a slug string, consisting of only alphanumeric words separated by
  * dashes, from any string.
  *
- * @param string $string   Original string
- * @param bool   $css_mode Flag to return css-friendly string
+ * @param string $string Original string
  *
  * @return string
  */
-function slugify($string, $css_mode = false)
+function slugify($string)
 {
     $ascii = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $string);
     return preg_replace(array('/[^a-z0-9 ]+/i', '/\s+/'), array('', '-'),
