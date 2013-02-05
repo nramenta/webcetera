@@ -884,13 +884,14 @@ function bcrypt_verify($string, $hash)
  * Returns a slug string, consisting of only alphanumeric words separated by
  * dashes, from any string.
  *
- * @param string $string Original string
+ * @param string $string  Input string
+ * @param string $charset Input string character set, defaults to UTF-8
  *
  * @return string
  */
-function slugify($string)
+function slugify($string, $charset = 'UTF-8')
 {
-    $ascii = iconv('UTF-8', 'ASCII//TRANSLIT//IGNORE', $string);
+    $ascii = iconv($charset, 'ASCII//TRANSLIT//IGNORE', $string);
     return preg_replace(array('/[^a-z0-9 ]+/i', '/\s+/'), array('', '-'),
         strtolower($ascii));
 }
