@@ -809,6 +809,7 @@ function force_download($filename, $content = null)
  *
  * @param string $filename Filename
  * @param string $content  Content to stream; defaults to null
+ * @param int    $count    Number of bytes sent (optional)
  *
  * @return bool Boolean true on success, false otherwise
  */
