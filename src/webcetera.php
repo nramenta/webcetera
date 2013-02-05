@@ -300,7 +300,12 @@ function form_validate($input, $definition, &$errors = null)
 // ## File upload
 
 /*
- * Uploads a file.
+ * Uploads a file. Rules and options are:
+ *
+ * - size: Exact file size in bytes.
+ * - min_size: Minimum file size in bytes.
+ * - max_size: Maximum file size in bytes.
+ * - types: Allowed mime types, e.g., "image/gif", "image/png".
  *
  * @param string $name File input field name
  * @param string $path Either a directory or the destination file path
@@ -318,11 +323,14 @@ function upload_file($name, $path, $opts = array())
         $min_size = isset($opts['min_size']) ? $opts['min_size'] : null;
         $max_size = isset($opts['max_size']) ? $opts['max_size'] : null;
     }
+
     $types = isset($opts['types']) ? array_convert($opts['types']) : array();
+
     $callback = isset($opts['callback']) && is_callable($opts['callback']) ?
         $opts['callback'] : null;
 
     $file = $_FILES[$name];
+
     if (is_dir($path)) {
         if (substr($path, strlen($path)-1, 1) != DIRECTORY_SEPARATOR) {
             $path .= DIRECTORY_SEPARATOR;
@@ -333,33 +341,30 @@ function upload_file($name, $path, $opts = array())
     }
 
     if ($file['error'] != 0) {
-        remove($file['tmp_name']);
-        return false;
+        goto error;
     }
 
-    if (isset($min_size)) {
-        if ($file['size'] < $min_size) {
-            remove($file['tmp_name']);
-            return false;
-        }
+    if (isset($min_size) && $file['size'] < $min_size) {
+        goto error;
     }
 
-    if (isset($max_size)) {
-        if ($file['size'] > $max_size) {
-            remove($file['tmp_name']);
-            return false;
-        }
+    if (isset($max_size) && $file['size'] > $max_size) {
+        goto error;
     }
 
     if ($types && !in_array($file['type'], $types)) {
-        remove($file['tmp_name']);
-        return false;
+        goto error;
     }
 
     if (isset($callback)) {
         return call_user_func($callback, $file, $dest, $opts);
     }
+
     return move_uploaded_file($file['tmp_name'], $dest);
+
+    error:
+    remove($file['tmp_name']);
+    return false;
 }
 
 // ## Arrays
