@@ -696,6 +696,17 @@ function array_whitelist($array, $keys)
  */
 function array_zip($array)
 {
+    $arrays = func_get_args();
+
+    foreach ($arrays as $i => $array) {
+        if (!is_array($array)) {
+            throw new \InvalidArgumentException(sprintf(
+                'argument %d of %s is not an array',
+                $i + 1, __FUNCTION__
+            ));
+        }
+    }
+
     $keys = array_values(array_reduce(func_get_args(), function($keys, $arg) {
         if (empty($keys)) return array_keys($arg);
         return array_intersect(array_keys($arg), $keys);
