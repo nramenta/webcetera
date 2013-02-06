@@ -682,7 +682,7 @@ function array_unzip($array)
  *
  * @return array
  */
-function array_whitelist($array, $keys)
+function array_whitelist(array $array, $keys)
 {
     if (func_num_args() == 2 && is_array(func_get_arg(1))) {
         $keys = func_get_arg(1);
@@ -690,6 +690,15 @@ function array_whitelist($array, $keys)
     } else {
         $keys = func_get_args();
         $array = array_shift($keys);
+
+        foreach ($keys as $i => $key) {
+            if (!is_string($key) && !is_int($key)) {
+                throw new \InvalidArgumentException(sprintf(
+                    'key %d of %s is not a string or integer',
+                    $i + 1, __FUNCTION__
+                ));
+            }
+        }
     }
     return array_intersect_key($array, array_flip($keys));
 }
