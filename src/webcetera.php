@@ -628,22 +628,30 @@ function array_pluck($array, $key, $preserve_keys = true)
  * @param mixed $value     Value to remove
  * @param mixed $value,... Unlimited optional values to remove
  *
- * @return bool Boolean true on success, false otherwise
+ * @return int Number of elements removed
  */
-function array_remove(&$array, $value = null)
+function array_remove(array &$array, $value = null)
 {
     $values = func_get_args();
     $array = array_shift($values);
-    if (!is_array($array)) return false;
 
     $keys = array();
     foreach ($values as $value) {
         $keys = array_merge($keys, array_keys($array, $value));
     }
-    array_walk($array, function($item, $key) use (&$array, $keys) {
-        if (in_array($key, $keys)) unset($array[$key]);
+
+    $removed = 0;
+
+    $_array = (array) $array;
+
+    array_walk($_array, function($item, $key) use (&$removed, &$array, $keys) {
+        if (in_array($key, $keys)) {
+            $removed += 1;
+            unset($array[$key]);
+        }
     });
-    return true;
+
+    return $removed;
 }
 
 /*
